@@ -4,11 +4,10 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { Link } from '@inertiajs/vue3';
 import AppLogo from './AppLogo.vue';
 import Button from './ui/button/Button.vue';
-
 </script>
 
 <template>
-    <Sidebar collapsible="icon" variant="inset">
+    <Sidebar variant="inset">
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>
@@ -28,9 +27,9 @@ import Button from './ui/button/Button.vue';
         <SidebarContent>
             <template v-for="note in $page.props.notes" :key="note.id">
                 <Link :href="route('notes.show', note.id)"
-                    class="flex flex-col gap-2 p-4 bg-white dark:bg-black/30 border-gray-200 dark:border-gray-900 border rounded-lg cursor-pointer dark:hover:bg-black/10 hover:bg-black/10 transition-colors ">
+                    class="first:dark:bg-black/90 first:dark:border-gray-200 flex flex-col gap-2 p-4 bg-white dark:bg-black/30 border-gray-200 dark:border-gray-900 border rounded-lg cursor-pointer dark:hover:bg-black/10 hover:bg-black/10 transition-colors ">
                     <div class="text-xs font-bold">{{ note.title }}</div>
-                    <small class="text-muted-foreground text-xs">
+                    <small class="first:dark:text-muted-foreground text-muted-foreground text-xs">
                         {{ `${note.description.slice(0, 60)}...` }}
                     </small>
                 </Link>

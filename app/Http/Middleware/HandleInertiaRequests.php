@@ -51,7 +51,10 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'notes' => $request->user()?->notes()->orderBy('created_at', 'desc')->get(),
+            'notes' => $request->user()?->notes()
+                ->when(in_array($request->route()->getName(), ['notes.show', 'notes.edit']), function ($query) use ($request) {
+                    return $query->orderByRaw('id = ? desc', [$request->route('note')->id]);
+                })->orderByDesc('created_at')->get(),
         ];
     }
 }

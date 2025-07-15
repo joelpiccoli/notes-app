@@ -57,4 +57,11 @@ class NotesController extends Controller
             'tags' => $request->tags,
         ]);
     }
+
+    public function destroy(Note $note)
+    {
+        $note->delete();
+
+        return redirect()->route('dashboard');
+    }
 }

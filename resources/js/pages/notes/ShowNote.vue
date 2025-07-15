@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import { computed } from 'vue';
 import Button from '@/components/ui/button/Button.vue';
-import { PencilIcon } from 'lucide-vue-next';
+import { PencilIcon, TrashIcon } from 'lucide-vue-next';
 
 const props = defineProps<{
     note: {
@@ -28,6 +28,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
+function deleteNote() {
+    confirm('Are you sure you want to delete this note?') && router.delete(route('notes.destroy', props.note.id));
+}
 </script>
 
 <template>
@@ -36,7 +39,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="space-y-4 w-11/12 mx-auto">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center mb-10">
                     <div class="flex flex-col gap-1">
                         <h1 class="text-2xl mb-1 font-bold">{{ note.title }}</h1>
                         <small class="text-sm text-muted-foreground">
@@ -44,9 +47,14 @@ const breadcrumbs: BreadcrumbItem[] = [
                         </small>
                     </div>
 
-                    <Button as="a" :href="route('notes.edit', note.id)">
-                        <PencilIcon class="w-4 h-4" /> Edit
-                    </Button>
+                    <div class="flex gap-2">
+                        <Button as="a" :href="route('notes.edit', note.id)">
+                            <PencilIcon class="w-4 h-4" /> Edit
+                        </Button>
+                        <Button variant="destructive" @click="deleteNote">
+                            <TrashIcon class="w-4 h-4" />
+                        </Button>
+                    </div>
                 </div>
 
                 <div class="prose prose-invert max-w-none">

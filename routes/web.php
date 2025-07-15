@@ -18,6 +18,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('notes/{note}', [NotesController::class, 'show'])->name('notes.show');
     Route::get('notes/{note}/edit', [NotesController::class, 'edit'])->name('notes.edit');
     Route::put('notes/{note}', [NotesController::class, 'update'])->name('notes.update');
+    Route::delete('notes/{note}', [NotesController::class, 'destroy'])->name('notes.destroy');
 });
 
 require __DIR__.'/settings.php';
