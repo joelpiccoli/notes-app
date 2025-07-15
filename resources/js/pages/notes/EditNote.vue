@@ -1,28 +1,43 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import Button from '@/components/ui/button/Button.vue';
 import { ref } from 'vue';
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard',
-            href: '/dashboard',
-        },
-        {
-            title: 'New note',
-            href: route('notes.create'),
-        }
-    ];
+const props = defineProps<{
+    note: {
+        id: number;
+        title: string;
+        description: string;
+        tags: string[];
+        created_at: string;
+        updated_at: string;
+    }
+}>();
 
-    const form = useForm({
-    title: '',
-    description: '',
-    tags: [] as string[]
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dashboard',
+        href: '/dashboard',
+    },
+    {
+        title: props.note.title,
+        href: route('notes.show', props.note.id),
+    },
+    {
+        title: 'Edit',
+        href: route('notes.edit', props.note.id),
+    }
+];
+
+const form = useForm({
+    title: props.note.title,
+    description: props.note.description,
+    tags: props.note.tags
 });
 
-const tagsInput = ref('');
+const tagsInput = ref(props.note.tags.join(', '));
 
 function submit() {
     const tagsArray = tagsInput.value
@@ -32,12 +47,16 @@ function submit() {
 
     form.tags = tagsArray;
 
-    form.post(route('notes.store'));
+    form.put(route('notes.update', props.note.id), {
+        onSuccess: () => {
+            router.get(route('notes.show', props.note.id));
+        },
+    });
 }
 </script>
 
 <template>
-    <Head title="New note" />
+    <Head :title="`Edit ${note.title}`" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
@@ -79,11 +98,7 @@ function submit() {
                     <p v-if="form.errors.tags" class="text-sm text-destructive">{{ form.errors.tags }}</p>
                 </div>
 
-                <div class="flex justify-end">
-                    <Button type="submit" :disabled="form.processing">
-                        Save note
-                    </Button>
-                </div>
+                <Button type="submit" :disabled="form.processing">Save changes</Button>
             </form>
         </div>
     </AppLayout>

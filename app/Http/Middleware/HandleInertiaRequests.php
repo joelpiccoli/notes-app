@@ -51,7 +51,7 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'notes' => $request->user()?->notes,
+            'notes' => $request->user()?->notes()->orderBy('created_at', 'desc')->get(),
         ];
     }
 }

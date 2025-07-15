@@ -15,6 +15,9 @@ Route::get('dashboard', function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('notes', [NotesController::class, 'create'])->name('notes.create');
     Route::post('notes', [NotesController::class, 'store'])->name('notes.store');
+    Route::get('notes/{note}', [NotesController::class, 'show'])->name('notes.show');
+    Route::get('notes/{note}/edit', [NotesController::class, 'edit'])->name('notes.edit');
+    Route::put('notes/{note}', [NotesController::class, 'update'])->name('notes.update');
 });
 
 require __DIR__.'/settings.php';

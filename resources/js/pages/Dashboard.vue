@@ -20,9 +20,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
             <div class="min-h-[100vh] flex-1 flex flex-col items-center gap-4">
-                <Button as="a" :href="route('notes.create')" variant="outline" size="lg">
-                    <Plus /> Nova nota
-                </Button>
+                <span class="text-sm text-muted-foreground">
+                    select a note to start
+                </span>
             </div>
         </div>
     </AppLayout>
